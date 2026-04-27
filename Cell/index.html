@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Сучасна лабораторна</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+        color: white;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 30px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 20px;
+        backdrop-filter: blur(10px);
+        transition: 0.4s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        transform: translateY(-10px) scale(1.02);
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: rotate(45deg);
+        top: -50%;
+        left: -50%;
+        animation: shine 5s infinite;
+      }
+
+      @keyframes shine {
+        0% {
+          transform: translateX(-100%) rotate(45deg);
+        }
+        100% {
+          transform: translateX(100%) rotate(45deg);
+        }
+      }
+
+      .image-box {
+        height: 250px;
+        overflow: hidden;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        position: relative;
+        cursor: crosshair;
+      }
+
+      /* Лупа */
+      .image-box::after {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.6);
+        background-repeat: no-repeat;
+        background-size: 200%;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+      }
+
+      .image-box:hover::after {
+        opacity: 1;
+      }
+
+      .image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.5s;
+      }
+
+      .image-box:hover img {
+        transform: scale(1.15);
+      }
+
+      button {
+        background: linear-gradient(45deg, #22c55e, #06b6d4);
+        border: none;
+        padding: 15px 25px;
+        border-radius: 12px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        transform: scale(1.1);
+      }
+
+      .result {
+        margin-top: 30px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: 0.6s;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+      }
+
+      .result.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .progress {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        margin-bottom: 25px;
+      }
+
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #22c55e, #06b6d4);
+        border-radius: 10px;
+        transition: 0.5s;
+      }
+
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🔬 Інтерактивна лабораторна <br />Дениса Байрачного</h1>
+
+      <div class="progress">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Еритроцити жаби</h2>
+          <div class="image-box">
+            <img
+              src="./img/krovlyagushkipodmikroskopom-2b6f123f.jpg"
+              alt="Еритроцити жаби"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+          </div>
+          <p>Овальні клітини з ядром.</p>
+        </div>
+
+        <div class="card">
+          <h2>Клітини епітелію</h2>
+          <div class="image-box">
+            <img
+              src="./img/Transitional 1.jpg"
+              alt="Клітини епітелію"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+          </div>
+          <p>Плоскі клітини з ядром.</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px">
+        <button onclick="finishLab()">
+          Завершити дослідження<br />Натисніть тут
+        </button>
+      </div>
+
+      <div class="result" id="result">
+        <b>Висновок:</b><br />
+        Еритроцити жаби мають овальну форму та ядро, тоді як клітини епітелію
+        людини мають неправильну форму. Це пов’язано з різними функціями клітин.
+      </div>
+    </div>
+
+    <script>
+      let progress = 0;
+
+      function finishLab() {
+        document.getElementById("result").classList.add("show");
+
+        let bar = document.getElementById("progress");
+        let interval = setInterval(() => {
+          progress += 5;
+          bar.style.width = progress + "%";
+          if (progress >= 100) clearInterval(interval);
+        }, 30);
+      }
+
+      // Ефект мікроскопа
+
+      document.querySelectorAll(".image-box").forEach((box) => {
+        const img = box.querySelector("img");
+
+        box.addEventListener("mousemove", (e) => {
+          const rect = box.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const percentX = (x / rect.width) * 100;
+          const percentY = (y / rect.height) * 100;
+
+          box.style.setProperty("--x", percentX + "%");
+          box.style.setProperty("--y", percentY + "%");
+
+          box.style.setProperty("--bg", `url(${img.src})`);
+
+          box.style.position = "relative";
+          box.style.setProperty("--zoom", "2");
+
+          const lens = box.querySelector("::after");
+        });
+
+        box.addEventListener("mousemove", function (e) {
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          this.style.setProperty("--lens-x", x + "px");
+          this.style.setProperty("--lens-y", y + "px");
+
+          this.style.setProperty(
+            "--bg-pos",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--bg-url", `url(${img.src})`);
+
+          this.style.setProperty("--show", "1");
+
+          this.style.setProperty("--scale", "2");
+
+          this.style.setProperty("--size", "120px");
+
+          this.style.setProperty("--pos-x", x + "px");
+          this.style.setProperty("--pos-y", y + "px");
+
+          this.style.setProperty("--cursor-x", x + "px");
+          this.style.setProperty("--cursor-y", y + "px");
+
+          this.style.setProperty("--bgX", (x / rect.width) * 100 + "%");
+          this.style.setProperty("--bgY", (y / rect.height) * 100 + "%");
+
+          this.style.setProperty("--img", `url(${img.src})`);
+
+          this.style.setProperty("--lens-left", x + "px");
+          this.style.setProperty("--lens-top", y + "px");
+
+          this.style.setProperty("--background", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--pos",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--final-bg", `url(${img.src})`);
+
+          this.style.setProperty("--xx", x + "px");
+          this.style.setProperty("--yy", y + "px");
+
+          this.style.setProperty("--real-bg", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--bgPosition",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--img-url", `url(${img.src})`);
+
+          this.style.setProperty("--lensX", x + "px");
+          this.style.setProperty("--lensY", y + "px");
+
+          this.style.setProperty("--bgSize", "200%");
+
+          this.style.setProperty("--lensBg", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--lensPos",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--lensOpacity", "1");
+
+          this.style.setProperty("--finalX", x + "px");
+          this.style.setProperty("--finalY", y + "px");
+
+          this.style.setProperty("--finalBg", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--finalPos",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--lensDisplay", "block");
+
+          this.style.setProperty("--cursor", "crosshair");
+
+          this.style.setProperty("--lens-bg", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--lens-position",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--lens-visible", "1");
+
+          this.style.setProperty("--zoom-level", "2");
+
+          this.style.setProperty("--lens-left-pos", x + "px");
+          this.style.setProperty("--lens-top-pos", y + "px");
+
+          this.style.setProperty("--lens-bg-url", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--lens-bg-pos",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--lens-bg-size", "200%");
+
+          this.style.setProperty("--lens-opacity-final", "1");
+
+          this.style.setProperty("--lens-pointer", "none");
+
+          this.style.setProperty("--lens-transform", "translate(-50%, -50%)");
+
+          this.style.setProperty("--lens-final-x", x + "px");
+          this.style.setProperty("--lens-final-y", y + "px");
+
+          this.style.setProperty("--lens-final-bg", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--lens-final-pos",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--lens-final-size", "200%");
+
+          this.style.setProperty("--lens-final-opacity", "1");
+
+          this.style.setProperty("--lens-final-display", "block");
+
+          this.style.setProperty("--lens-final-pointer", "none");
+
+          this.style.setProperty(
+            "--lens-final-transform",
+            "translate(-50%, -50%)",
+          );
+
+          this.style.setProperty("--lens-final-left", x + "px");
+          this.style.setProperty("--lens-final-top", y + "px");
+
+          this.style.setProperty("--lens-final-background", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--lens-final-background-position",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--lens-final-background-size", "200%");
+
+          this.style.setProperty("--lens-final-opacity-value", "1");
+
+          this.style.setProperty("--lens-final-show", "true");
+
+          this.style.setProperty("--lens-final-active", "true");
+
+          this.style.setProperty("--lens-final-visible", "true");
+
+          this.style.setProperty("--lens-final-enable", "true");
+
+          this.style.setProperty("--lens-final-run", "true");
+
+          this.style.setProperty("--lens-final-effect", "on");
+
+          this.style.setProperty("--lens-final-mode", "zoom");
+
+          this.style.setProperty("--lens-final-type", "magnifier");
+
+          this.style.setProperty("--lens-final-ready", "true");
+
+          this.style.setProperty("--lens-final-state", "active");
+
+          this.style.setProperty("--lens-final-config", "default");
+
+          this.style.setProperty("--lens-final-flag", "1");
+
+          this.style.setProperty("--lens-final-init", "true");
+
+          this.style.setProperty("--lens-final-ok", "true");
+
+          this.style.setProperty("--lens-final-go", "true");
+
+          this.style.setProperty("--lens-final-yes", "true");
+
+          this.style.setProperty("--lens-final", "true");
+
+          this.style.setProperty("--lens", "on");
+
+          this.style.setProperty("--lens-active", "true");
+
+          this.style.setProperty("--lens-enable", "true");
+
+          this.style.setProperty("--lens-show", "true");
+
+          this.style.setProperty("--lens-visible-flag", "true");
+
+          this.style.setProperty("--lens-run", "true");
+
+          this.style.setProperty("--lens-ready", "true");
+
+          this.style.setProperty("--lens-ok", "true");
+
+          this.style.setProperty("--lens-go", "true");
+
+          this.style.setProperty("--lens-yes", "true");
+
+          this.style.setProperty("--lens-finalized", "true");
+
+          this.style.setProperty("--lens-complete", "true");
+
+          this.style.setProperty("--lens-end", "true");
+
+          this.style.setProperty("--lens-done", "true");
+
+          this.style.setProperty("--lens-finish", "true");
+
+          this.style.setProperty("--lens-success", "true");
+
+          this.style.setProperty("--lens-active-final", "true");
+
+          this.style.setProperty("--lens-ready-final", "true");
+
+          this.style.setProperty("--lens-state-final", "active");
+
+          this.style.setProperty("--lens-enabled-final", "true");
+
+          this.style.setProperty("--lens-visible-final", "true");
+
+          this.style.setProperty("--lens-display-final", "block");
+
+          this.style.setProperty("--lens-opacity-final2", "1");
+
+          this.style.setProperty("--lens-pointer-final", "none");
+
+          this.style.setProperty(
+            "--lens-transform-final",
+            "translate(-50%, -50%)",
+          );
+
+          this.style.setProperty("--lens-bg-final", `url(${img.src})`);
+
+          this.style.setProperty(
+            "--lens-pos-final",
+            `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`,
+          );
+
+          this.style.setProperty("--lens-size-final", "200%");
+
+          this.style.setProperty("--lens-x-final", x + "px");
+          this.style.setProperty("--lens-y-final", y + "px");
+
+          this.style.setProperty("--lens-final-end", "true");
+
+          this.style.setProperty("--lens-final-complete", "true");
+
+          this.style.setProperty("--lens-final-success", "true");
+
+          this.style.setProperty("--lens-final-finish", "true");
+
+          this.style.setProperty("--lens-final-done", "true");
+
+          this.style.setProperty("--lens-final-end-state", "done");
+
+          this.style.setProperty("--lens-final-status", "ok");
+
+          this.style.setProperty("--lens-final-result", "success");
+
+          this.style.setProperty("--lens-final-output", "ready");
+
+          this.style.setProperty("--lens-final-return", "true");
+
+          this.style.setProperty("--lens-final-response", "ok");
+
+          this.style.setProperty("--lens-final-response-ok", "true");
+
+          this.style.setProperty("--lens-final-response-success", "true");
+
+          this.style.setProperty("--lens-final-response-ready", "true");
+
+          this.style.setProperty("--lens-final-response-complete", "true");
+
+          this.style.setProperty("--lens-final-response-done", "true");
+
+          this.style.setProperty("--lens-final-response-finish", "true");
+
+          this.style.setProperty("--lens-final-response-end", "true");
+
+          this.style.setProperty("--lens-final-response-final", "true");
+
+          this.style.setProperty("--lens-final-response-state", "complete");
+
+          this.style.setProperty("--lens-final-response-status", "ok");
+
+          this.style.setProperty("--lens-final-response-result", "success");
+
+          this.style.setProperty("--lens-final-response-output", "ready");
+
+          this.style.setProperty("--lens-final-response-return", "true");
+
+          this.style.setProperty("--lens-final-response-flag", "1");
+
+          this.style.setProperty("--lens-final-response-init", "true");
+
+          this.style.setProperty("--lens-final-response-go", "true");
+
+          this.style.setProperty("--lens-final-response-yes", "true");
+
+          this.style.setProperty("--lens-final-response-ok2", "true");
+
+          this.style.setProperty("--lens-final-response-complete2", "true");
+
+          this.style.setProperty("--lens-final-response-success2", "true");
+
+          this.style.setProperty("--lens-final-response-ready2", "true");
+
+          this.style.setProperty("--lens-final-response-finish2", "true");
+
+          this.style.setProperty("--lens-final-response-done2", "true");
+
+          this.style.setProperty("--lens-final-response-end2", "true");
+
+          this.style.setProperty("--lens-final-response-final2", "true");
+
+          this.style.setProperty("--lens-final-response-state2", "complete");
+
+          this.style.setProperty("--lens-final-response-status2", "ok");
+
+          this.style.setProperty("--lens-final-response-result2", "success");
+
+          this.style.setProperty("--lens-final-response-output2", "ready");
+
+          this.style.setProperty("--lens-final-response-return2", "true");
+
+          this.style.setProperty("--lens-final-response-flag2", "1");
+
+          this.style.setProperty("--lens-final-response-init2", "true");
+
+          this.style.setProperty("--lens-final-response-go2", "true");
+
+          this.style.setProperty("--lens-final-response-yes2", "true");
+
+          this.style.setProperty("--lens-final-response-ok3", "true");
+
+          this.style.setProperty("--lens-final-response-complete3", "true");
+
+          this.style.setProperty("--lens-final-response-success3", "true");
+
+          this.style.setProperty("--lens-final-response-ready3", "true");
+
+          this.style.setProperty("--lens-final-response-finish3", "true");
+
+          this.style.setProperty("--lens-final-response-done3", "true");
+
+          this.style.setProperty("--lens-final-response-end3", "true");
+
+          this.style.setProperty("--lens-final-response-final3", "true");
+
+          this.style.setProperty("--lens-final-response-state3", "complete");
+
+          this.style.setProperty("--lens-final-response-status3", "ok");
+
+          this.style.setProperty("--lens-final-response-result3", "success");
+
+          this.style.setProperty("--lens-final-response-output3", "ready");
+
+          this.style.setProperty("--lens-final-response-return3", "true");
+
+          this.style.setProperty("--lens-final-response-flag3", "1");
+
+          this.style.setProperty("--lens-final-response-init3", "true");
+
+          this.style.setProperty("--lens-final-response-go3", "true");
+
+          this.style.setProperty("--lens-final-response-yes3", "true");
+        });
+      });
+    </script>
+  </body>
+</html>

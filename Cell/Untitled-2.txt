@@ -1,0 +1,24 @@
+Python 3.14.3 (tags/v3.14.3:323c59a, Feb 3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)] on win32
+Enter "help" below or click "Help" above for more information.
+>>> print (2*2==4)
+True
+>>> print (2*2==8)
+False
+=========== RESTART: C:/Users/Юлія/Desktop/ПАЙТОН/if функція.py ===========
+2 3
+2 3
+=========== RESTART: C:/Users/Юлія/Desktop/ПАЙТОН/if функція.py ===========
+2
+Traceback (most recent call last):
+File "C:/Users/Юлія/Desktop/ПАЙТОН/if функція.py", line 1, in <module>
+a,b = map(int,input().split())
+ValueError: not enough values to unpack (expected 2, got 1)
+=========== RESTART: C:/Users/Юлія/Desktop/ПАЙТОН/if функція.py ===========
+3 6
+3 6
+= RESTART: C:/Users/Юлія/Desktop/ПАЙТОН/if функція.py
+Уведіть a i b з клавіатури через пробіл 3 5
+3 5
+= RESTART: C:/Users/Юлія/Desktop/ПАЙТОН/if функція.py
+Уведіть a i b з клавіатури через пропуск 3 7
+3 7
