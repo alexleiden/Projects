@@ -1,0 +1,12 @@
+{
+  "name": "fs-js-project-118",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Bayrachniy Alexey <bayrachniy@ukr.net>",
+  "license": "ISC"
+}
